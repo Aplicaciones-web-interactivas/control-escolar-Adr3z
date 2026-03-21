@@ -367,6 +367,10 @@
        class="sidebar-link {{ request()->is('horarios*') ? 'active' : '' }}">
         <i class="bi bi-clock-fill"></i> Horarios
     </a>
+    <a href="{{ route('grupos.index') }}"
+       class="sidebar-link {{ request()->is('grupos*') ? 'active' : '' }}">
+        <i class="bi bi-collection-fill"></i> Grupos
+    </a>
 </aside>
 
 {{-- Main --}}

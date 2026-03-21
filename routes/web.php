@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\HorarioController;
+use App\Http\Controllers\GrupoController;
 
 Route::get('/', fn() => redirect()->route('usuarios.index'));
 
@@ -25,4 +26,8 @@ Route::resource('materias', MateriaController::class)->parameters([
 
 Route::resource('horarios', HorarioController::class)->parameters([
     'horarios' => 'horario',
+]);
+
+Route::resource('grupos', GrupoController::class)->parameters([
+    'grupos' => 'grupo',
 ]);
