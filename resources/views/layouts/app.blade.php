@@ -297,11 +297,10 @@
 
         .day-check input[type=checkbox] { display: none; }
 
-        .day-check input[type=checkbox]:checked + span,
         .day-check label:has(input:checked) {
-            background: rgba(108,99,255,.18);
+            background: rgba(108,99,255,.12);
             border-color: var(--accent);
-            color: var(--accent);
+            color: var(--muted);
         }
 
         /* ── Alert ── */
@@ -400,18 +399,16 @@
         label.addEventListener('click', () => {
             setTimeout(() => {
                 const checked = label.querySelector('input[type=checkbox]').checked;
-                label.style.background   = checked ? 'rgba(108,99,255,.18)' : '';
-                label.style.borderColor  = checked ? 'var(--accent)'        : '';
-                label.style.color        = checked ? 'var(--accent)'        : '';
+                label.style.background  = checked ? 'rgba(108,99,255,.12)' : '';
+                label.style.borderColor = checked ? 'var(--accent)'        : '';
             }, 0);
         });
 
         // Estado inicial
         const cb = label.querySelector('input[type=checkbox]');
         if (cb && cb.checked) {
-            label.style.background  = 'rgba(108,99,255,.18)';
+            label.style.background  = 'rgba(108,99,255,.12)';
             label.style.borderColor = 'var(--accent)';
-            label.style.color       = 'var(--accent)';
         }
     });
 </script>

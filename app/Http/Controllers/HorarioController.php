@@ -9,83 +9,71 @@ use Illuminate\Http\Request;
 
 class HorarioController extends Controller
 {
-    // GET /horarios
     public function index()
     {
-        $horarios = Horario::with(['materia', 'usuario'])
-                           ->orderBy('hora_inicio')
-                           ->paginate(15);
-        return view('horarios.index', compact('horarios'));
+        $horarios = Horario::with(['materia', 'usuario'])->get();
+        $materias = Materia::all();
+        $usuarios = Usuario::where('rol', 'maestro')->get();
+        return view('horarios.index', compact('horarios', 'materias', 'usuarios'));
     }
 
-    // GET /horarios/crear
     public function create()
     {
-        $materias = Materia::orderBy('nombre')->get();
-        $usuarios = Usuario::where('rol', 'maestro')->orderBy('nombre')->get();
-        return view('horarios.crear', compact('materias', 'usuarios'));
+        $materias = Materia::all();
+        $usuarios = Usuario::where('rol', 'maestro')->get();
+        $horario  = null;
+        return view('horarios.create', compact('materias', 'usuarios', 'horario'));
     }
 
-    // POST /horarios
     public function store(Request $request)
     {
-        $request->validate([
+        $datos = $request->validate([
             'materia_id'  => 'required|exists:materias,id',
-            'usuario_id'  => 'required|exists:usuarios,id',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fin'    => 'required|date_format:H:i|after:hora_inicio',
-            'dias'        => 'required|array|min:1',
-            'dias.*'      => 'in:lunes,martes,miercoles,jueves,viernes,sabado',
+            'usuario_id'  => 'nullable|exists:usuarios,id',
+            'dias'        => 'required|array',
+            'hora_inicio' => 'required',
+            'hora_fin'    => 'required',
         ]);
 
-        Horario::create($request->only(
-            'materia_id', 'usuario_id', 'hora_inicio', 'hora_fin', 'dias'
-        ));
+        $datos['dias'] = implode(', ', $request->dias);
 
-        return redirect()->route('horarios.index')
-                         ->with('exito', 'Horario creado correctamente.');
+        Horario::create($datos);
+
+        return redirect()->route('horarios.index')->with('exito', 'Horario registrado correctamente.');
     }
 
-    // GET /horarios/{id}
     public function show(Horario $horario)
     {
-        $horario->load(['materia', 'usuario']);
         return view('horarios.ver', compact('horario'));
     }
 
-    // GET /horarios/{id}/editar
     public function edit(Horario $horario)
     {
-        $materias = Materia::orderBy('nombre')->get();
-        $usuarios = Usuario::where('rol', 'maestro')->orderBy('nombre')->get();
-        return view('horarios.editar', compact('horario', 'materias', 'usuarios'));
+        $materias = Materia::all();
+        $usuarios = Usuario::where('rol', 'maestro')->get();
+        return view('horarios.edit', compact('horario', 'materias', 'usuarios'));
     }
 
-    // PUT /horarios/{id}
     public function update(Request $request, Horario $horario)
     {
-        $request->validate([
+        $datos = $request->validate([
             'materia_id'  => 'required|exists:materias,id',
-            'usuario_id'  => 'required|exists:usuarios,id',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fin'    => 'required|date_format:H:i|after:hora_inicio',
-            'dias'        => 'required|array|min:1',
-            'dias.*'      => 'in:lunes,martes,miercoles,jueves,viernes,sabado',
+            'usuario_id'  => 'nullable|exists:usuarios,id',
+            'dias'        => 'required|array',
+            'hora_inicio' => 'required',
+            'hora_fin'    => 'required',
         ]);
 
-        $horario->update($request->only(
-            'materia_id', 'usuario_id', 'hora_inicio', 'hora_fin', 'dias'
-        ));
+        $datos['dias'] = implode(', ', $request->dias);
 
-        return redirect()->route('horarios.index')
-                         ->with('exito', 'Horario actualizado correctamente.');
+        $horario->update($datos);
+
+        return redirect()->route('horarios.index')->with('exito', 'Horario actualizado correctamente.');
     }
 
-    // DELETE /horarios/{id}
     public function destroy(Horario $horario)
     {
         $horario->delete();
-        return redirect()->route('horarios.index')
-                         ->with('exito', 'Horario eliminado correctamente.');
+        return redirect()->route('horarios.index')->with('exito', 'Horario eliminado.');
     }
 }
