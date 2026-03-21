@@ -1,23 +1,29 @@
 @extends('layouts.app')
 @section('titulo', 'Nueva Materia')
+
 @section('contenido')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="bi bi-book-fill"></i> Nueva Materia</h5>
+<div class="topbar">
+    <h1 class="page-title"><i class="bi bi-plus-circle-fill" style="color:var(--accent2)"></i> Nueva Materia</h1>
+    <a href="{{ route('materias.index') }}" class="btn-ghost">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="card-dark" style="max-width:480px">
+    <div class="card-dark-header">
+        <i class="bi bi-book-fill" style="color:var(--accent2)"></i> Datos de la Materia
+    </div>
+    <div class="card-dark-body">
+        <form action="{{ route('materias.store') }}" method="POST">
+            @csrf
+            @include('materias._form')
+            <div style="display:flex;gap:10px;margin-top:24px">
+                <button type="submit" class="btn-accent">
+                    <i class="bi bi-check-lg"></i> Guardar
+                </button>
+                <a href="{{ route('materias.index') }}" class="btn-ghost">Cancelar</a>
             </div>
-            <div class="card-body">
-                <form action="{{ route('materias.store') }}" method="POST">
-                    @csrf
-                    @include('materias._form')
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
-                        <a href="{{ route('materias.index') }}" class="btn btn-secondary">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 @endsection

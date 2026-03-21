@@ -2,45 +2,62 @@
 @section('titulo', 'Materias')
 
 @section('contenido')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-book"></i> Materias</h2>
-    <a href="{{ route('materias.create') }}" class="btn btn-primary">
+<div class="topbar">
+    <h1 class="page-title"><i class="bi bi-book-fill" style="color:var(--accent2)"></i> Materias</h1>
+    <a href="{{ route('materias.create') }}" class="btn-accent">
         <i class="bi bi-plus-lg"></i> Nueva Materia
     </a>
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-dark">
-                <tr><th>#</th><th>Nombre</th><th>Clave</th><th>Acciones</th></tr>
+<div class="card-dark">
+    <div class="table-responsive">
+        <table class="table-dark-custom">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Clave</th>
+                    <th style="text-align:center">Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 @forelse($materias as $materia)
                 <tr>
-                    <td>{{ $materia->id }}</td>
-                    <td>{{ $materia->nombre }}</td>
+                    <td style="color:var(--muted)">{{ $materia->id }}</td>
+                    <td style="font-weight:600">{{ $materia->nombre }}</td>
                     <td><code>{{ $materia->clave }}</code></td>
-                    <td>
-                        <a href="{{ route('materias.show', $materia) }}" class="btn btn-sm btn-outline-info">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="{{ route('materias.edit', $materia) }}" class="btn btn-sm btn-outline-warning">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <form action="{{ route('materias.destroy', $materia) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('¿Eliminar esta materia?')">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </form>
+                    <td style="text-align:center">
+                        <div style="display:flex;justify-content:center;gap:6px">
+                            <a href="{{ route('materias.show', $materia) }}" class="btn-icon btn-icon-blue" title="Ver">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ route('materias.edit', $materia) }}" class="btn-icon btn-icon-amber" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ route('materias.destroy', $materia) }}" method="POST" style="display:inline"
+                                  onsubmit="return confirm('¿Eliminar esta materia?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="4" class="text-center text-muted py-4">No hay materias registradas.</td></tr>
+                <tr>
+                    <td colspan="4" style="text-align:center;color:var(--muted);padding:40px">
+                        <i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:8px"></i>
+                        No hay materias registradas.
+                    </td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
-<div class="mt-3">{{ $materias->links() }}</div>
+
+@if(method_exists($materias, 'links'))
+<div style="margin-top:16px">{{ $materias->links() }}</div>
+@endif
 @endsection

@@ -2,25 +2,28 @@
 @section('titulo', 'Editar Usuario')
 
 @section('contenido')
-<div class="row justify-content-center">
-    <div class="col-md-7">
-        <div class="card shadow-sm">
-            <div class="card-header bg-warning">
-                <h5 class="mb-0">Editar Usuario: {{ $usuario->nombre }}</h5>
+<div class="topbar">
+    <h1 class="page-title"><i class="bi bi-pencil-fill" style="color:#fbbf24"></i> Editar Usuario</h1>
+    <a href="{{ route('usuarios.index') }}" class="btn-ghost">
+        <i class="bi bi-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="card-dark" style="max-width:680px">
+    <div class="card-dark-header">
+        <i class="bi bi-person-fill" style="color:#fbbf24"></i> {{ $usuario->nombre }}
+    </div>
+    <div class="card-dark-body">
+        <form action="{{ route('usuarios.update', $usuario) }}" method="POST">
+            @csrf @method('PUT')
+            @include('usuarios._form')
+            <div style="display:flex;gap:10px;margin-top:24px">
+                <button type="submit" class="btn-accent">
+                    <i class="bi bi-save"></i> Actualizar
+                </button>
+                <a href="{{ route('usuarios.index') }}" class="btn-ghost">Cancelar</a>
             </div>
-            <div class="card-body">
-                <form action="{{ route('usuarios.update', $usuario) }}" method="POST">
-                    @csrf @method('PUT')
-                    @include('usuarios._form')
-                    <div class="d-flex gap-2 mt-3">
-                        <button type="submit" class="btn btn-warning">
-                            Actualizar
-                        </button>
-                        <a href="{{ route('usuarios.index') }}" class="btn btn-secondary">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 @endsection

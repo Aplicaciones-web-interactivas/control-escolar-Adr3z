@@ -2,51 +2,65 @@
 @section('titulo', 'Ver Materia')
 
 @section('contenido')
-<div class="row">
-    <div class="col-md-5">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="bi bi-book"></i> Detalle de Materia</h5>
+<div class="topbar">
+    <h1 class="page-title"><i class="bi bi-book-fill" style="color:var(--accent2)"></i> {{ $materia->nombre }}</h1>
+    <div style="display:flex;gap:8px">
+        <a href="{{ route('materias.edit', $materia) }}" class="btn-accent">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a href="{{ route('materias.index') }}" class="btn-ghost">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1.6fr;gap:20px">
+
+    {{-- Detalle --}}
+    <div class="card-dark">
+        <div class="card-dark-header">
+            <i class="bi bi-info-circle" style="color:var(--accent2)"></i> Información
+        </div>
+        <div class="card-dark-body">
+            <div class="detail-row">
+                <span class="detail-label">Nombre</span>
+                <span class="detail-value" style="font-weight:600">{{ $materia->nombre }}</span>
             </div>
-            <div class="card-body">
-                <p><strong>Nombre:</strong> {{ $materia->nombre }}</p>
-                <p><strong>Clave:</strong> <code>{{ $materia->clave }}</code></p>
-            </div>
-            <div class="card-footer d-flex gap-2">
-                <a href="{{ route('materias.edit', $materia) }}" class="btn btn-warning btn-sm">
-                    <i class="bi bi-pencil"></i> Editar
-                </a>
-                <a href="{{ route('materias.index') }}" class="btn btn-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> Volver
-                </a>
+            <div class="detail-row">
+                <span class="detail-label">Clave</span>
+                <span class="detail-value"><code>{{ $materia->clave }}</code></span>
             </div>
         </div>
     </div>
 
-    <div class="col-md-7">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <h6 class="mb-0"><i class="bi bi-clock"></i> Horarios de esta Materia</h6>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-sm mb-0">
-                    <thead class="table-light">
-                        <tr><th>Maestro</th><th>Días</th><th>Horario</th></tr>
-                    </thead>
-                    <tbody>
-                        @forelse($materia->horarios as $h)
-                        <tr>
-                            <td>{{ $h->usuario->nombre ?? '—' }}</td>
-                            <td>{{ implode(', ', $h->dias) }}</td>
-                            <td>{{ $h->hora_inicio }} - {{ $h->hora_fin }}</td>
-                        </tr>
-                        @empty
-                        <tr><td colspan="3" class="text-center text-muted py-3">Sin horarios asignados.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+    {{-- Horarios --}}
+    <div class="card-dark">
+        <div class="card-dark-header">
+            <i class="bi bi-clock-fill" style="color:var(--accent)"></i> Horarios de esta Materia
         </div>
+        <table class="table-dark-custom">
+            <thead>
+                <tr>
+                    <th>Maestro</th>
+                    <th>Días</th>
+                    <th>Horario</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($materia->horarios as $h)
+                <tr>
+                    <td style="font-weight:600">{{ $h->usuario->nombre ?? '—' }}</td>
+                    <td style="color:var(--muted)">{{ is_array($h->dias) ? implode(', ', $h->dias) : $h->dias }}</td>
+                    <td><code>{{ $h->hora_inicio }} – {{ $h->hora_fin }}</code></td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" style="text-align:center;color:var(--muted);padding:28px">Sin horarios asignados.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+
 </div>
 @endsection
