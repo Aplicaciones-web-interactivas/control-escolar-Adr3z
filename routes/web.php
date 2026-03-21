@@ -6,6 +6,7 @@ use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\InscripcionController;
+use App\Http\Controllers\CalificacionController;
 
 
 Route::get('/', fn() => redirect()->route('usuarios.index'));
@@ -37,3 +38,9 @@ Route::resource('grupos', GrupoController::class)->parameters([
 Route::resource('inscripciones', InscripcionController::class)
     ->only(['index', 'create', 'store', 'show', 'destroy'])
     ->parameters(['inscripciones' => 'inscripcion']);
+
+Route::resource('calificaciones', CalificacionController::class)
+    ->parameters(['calificaciones' => 'calificacion']);
+
+Route::get('calificaciones/alumnos/{grupoId}', [CalificacionController::class, 'alumnosPorGrupo'])
+    ->name('calificaciones.alumnos');

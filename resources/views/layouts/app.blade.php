@@ -375,6 +375,10 @@
        class="sidebar-link {{ request()->is('inscripciones*') ? 'active' : '' }}">
         <i class="bi bi-person-check-fill"></i> Inscripciones
     </a>
+    <a href="{{ route('calificaciones.index') }}"
+       class="sidebar-link {{ request()->is('calificaciones*') ? 'active' : '' }}">
+        <i class="bi bi-star-fill"></i> Calificaciones
+    </a>
 </aside>
 
 {{-- Main --}}
