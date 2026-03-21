@@ -391,10 +391,57 @@
     @yield('contenido')
 </main>
 
+{{-- Modal de confirmación de eliminación --}}
+<div id="modalEliminar" style="display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center;">
+    {{-- Overlay --}}
+    <div onclick="cerrarModal()" style="position:absolute;inset:0;background:rgba(15,17,23,.45);backdrop-filter:blur(3px)"></div>
+
+    {{-- Caja --}}
+    <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.15);text-align:center">
+
+        {{-- Ícono --}}
+        <div style="width:56px;height:56px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+            <i class="bi bi-trash3-fill" style="font-size:1.4rem;color:#dc2626"></i>
+        </div>
+
+        <h5 style="font-size:1.1rem;font-weight:700;color:var(--text);margin:0 0 8px">¿Eliminar este registro?</h5>
+        <p id="modalMensaje" style="font-size:.875rem;color:var(--muted);margin:0 0 24px">Esta acción no se puede deshacer.</p>
+
+        <div style="display:flex;gap:10px;justify-content:center">
+            <button onclick="cerrarModal()" class="btn-ghost">
+                Cancelar
+            </button>
+            <form id="modalForm" method="POST" style="display:inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" style="background:#dc2626;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:.875rem;font-weight:600;cursor:pointer;transition:opacity .15s"
+                        onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                    <i class="bi bi-trash3"></i> Sí, eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Toggle visual de checkboxes de días
+    // ── Modal de eliminación ──
+    function confirmarEliminar(action, mensaje) {
+        document.getElementById('modalForm').action = action;
+        document.getElementById('modalMensaje').textContent = mensaje || 'Esta acción no se puede deshacer.';
+        const modal = document.getElementById('modalEliminar');
+        modal.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalEliminar').style.display = 'none';
+    }
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
+    // ── Toggle visual de checkboxes de días ──
     document.querySelectorAll('.day-check label').forEach(label => {
         label.addEventListener('click', () => {
             setTimeout(() => {
@@ -404,7 +451,6 @@
             }, 0);
         });
 
-        // Estado inicial
         const cb = label.querySelector('input[type=checkbox]');
         if (cb && cb.checked) {
             label.style.background  = 'rgba(108,99,255,.12)';

@@ -47,7 +47,7 @@
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" style="display:inline"
-                                  onsubmit="return confirm('¿Eliminar este usuario?')">
+                                  onclick="confirmarEliminar(this.action, '¿Eliminar al usuario? Esta acción no se puede deshacer.'); return false;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>

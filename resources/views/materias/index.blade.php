@@ -35,7 +35,7 @@
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form action="{{ route('materias.destroy', $materia) }}" method="POST" style="display:inline"
-                                  onsubmit="return confirm('¿Eliminar esta materia?')">
+                                  onclick="confirmarEliminar(this.action, '¿Eliminar esta materia? Esta acción no se puede deshacer.'); return false;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>

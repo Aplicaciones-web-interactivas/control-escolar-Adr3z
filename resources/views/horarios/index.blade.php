@@ -46,7 +46,7 @@
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form action="{{ route('horarios.destroy', $horario) }}" method="POST" style="display:inline"
-                                  onsubmit="return confirm('¿Eliminar este horario?')">
+                                  onclick="confirmarEliminar(this.action, '¿Eliminar este horario? Esta acción no se puede deshacer.'); return false;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>
