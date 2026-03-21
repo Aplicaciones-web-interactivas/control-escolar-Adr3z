@@ -5,6 +5,8 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\InscripcionController;
+
 
 Route::get('/', fn() => redirect()->route('usuarios.index'));
 
@@ -31,3 +33,7 @@ Route::resource('horarios', HorarioController::class)->parameters([
 Route::resource('grupos', GrupoController::class)->parameters([
     'grupos' => 'grupo',
 ]);
+
+Route::resource('inscripciones', InscripcionController::class)
+    ->only(['index', 'create', 'store', 'show', 'destroy'])
+    ->parameters(['inscripciones' => 'inscripcion']);

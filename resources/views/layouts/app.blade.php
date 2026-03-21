@@ -371,6 +371,10 @@
        class="sidebar-link {{ request()->is('grupos*') ? 'active' : '' }}">
         <i class="bi bi-collection-fill"></i> Grupos
     </a>
+    <a href="{{ route('inscripciones.index') }}"
+       class="sidebar-link {{ request()->is('inscripciones*') ? 'active' : '' }}">
+        <i class="bi bi-person-check-fill"></i> Inscripciones
+    </a>
 </aside>
 
 {{-- Main --}}
