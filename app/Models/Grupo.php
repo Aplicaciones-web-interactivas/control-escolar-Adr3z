@@ -18,7 +18,7 @@ class Grupo extends Model
 
     public function usuarios()
     {
-        return $this->belongsToMany(User::class, 'inscripciones', 'grupo_id', 'usuario_id');
+        return $this->belongsToMany(Usuario::class, 'inscripciones', 'grupo_id', 'usuario_id');
     }
 
     public function inscripciones()
