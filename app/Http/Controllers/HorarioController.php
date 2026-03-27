@@ -11,7 +11,7 @@ class HorarioController extends Controller
 {
     public function index()
     {
-        $horarios = Horario::with(['materia', 'usuario'])->get();
+        $horarios = Horario::with(['materia', 'usuario'])->paginate(2);
         $materias = Materia::all();
         $usuarios = Usuario::where('rol', 'maestro')->get();
         return view('horarios.index', compact('horarios', 'materias', 'usuarios'));

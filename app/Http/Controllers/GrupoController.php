@@ -10,7 +10,7 @@ class GrupoController extends Controller
 {
     public function index()
     {
-        $grupos = Grupo::with(['horario.materia', 'horario.usuario'])->get();
+        $grupos = Grupo::with(['horario.materia', 'horario.usuario'])->paginate(2);
         return view('grupos.index', compact('grupos'));
     }
 

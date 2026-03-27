@@ -49,7 +49,8 @@
         </div>
     </div>
 
-    {{-- Horarios --}}
+    {{-- Panel derecho: depende del rol del usuario visto --}}
+    @if($usuario->rol === 'maestro')
     <div class="card-dark">
         <div class="card-dark-header">
             <i class="bi bi-clock-fill" style="color:var(--accent)"></i> Horarios Asignados
@@ -77,6 +78,40 @@
             </tbody>
         </table>
     </div>
+    @else
+    <div class="card-dark">
+        <div class="card-dark-header">
+            <i class="bi bi-collection-fill" style="color:var(--accent)"></i> Grupos Inscritos
+            <span style="margin-left:auto;background:var(--border);padding:2px 10px;border-radius:20px;font-size:.75rem">
+                {{ $usuario->inscripciones->count() }}
+            </span>
+        </div>
+        <table class="table-dark-custom">
+            <thead>
+                <tr>
+                    <th>Grupo</th>
+                    <th>Materia</th>
+                    <th style="text-align:center">Horario</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($usuario->inscripciones as $ins)
+                <tr>
+                    <td style="font-weight:600">{{ $ins->grupo->nombre ?? '—' }}</td>
+                    <td>{{ $ins->grupo->horario->materia->nombre ?? '—' }}</td>
+                    <td style="text-align:center">
+                        <code>{{ $ins->grupo->horario->hora_inicio ?? '—' }} – {{ $ins->grupo->horario->hora_fin ?? '' }}</code>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" style="text-align:center;color:var(--muted);padding:28px">Sin grupos inscritos.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    @endif
 
 </div>
 @endsection

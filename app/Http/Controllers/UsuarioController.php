@@ -11,7 +11,7 @@ class UsuarioController extends Controller
     // GET /usuarios
     public function index()
     {
-        $usuarios = Usuario::orderBy('nombre')->paginate(15);
+        $usuarios = Usuario::orderBy('nombre')->paginate(2);
         return view('usuarios.index', compact('usuarios'));
     }
 
@@ -47,9 +47,14 @@ class UsuarioController extends Controller
     // GET /usuarios/{id}
     public function show(Usuario $usuario)
     {
-        $usuario->load('horarios.materia');
+        if ($usuario->rol === 'maestro') {
+            $usuario->load('horarios.materia');
+        } else {
+            $usuario->load('inscripciones.grupo.horario.materia');
+        }
         return view('usuarios.ver', compact('usuario'));
     }
+ 
 
     // GET /usuarios/{id}/editar
     public function edit(Usuario $usuario)
