@@ -9,6 +9,7 @@ use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\CalificacionController;
+use App\Http\Controllers\TareaController;
 
 // ── Raíz ──────────────────────────────────────────────
 Route::get('/', fn() => redirect()->route('login'));
@@ -26,6 +27,8 @@ Route::get('/mi-panel/materias',       [MateriaController::class,      'index'])
 Route::get('/mi-panel/horarios',       [HorarioController::class,      'index'])->name('alumno.horarios');
 Route::get('/mi-panel/grupos',         [GrupoController::class,        'index'])->name('alumno.grupos');
 Route::get('/mi-panel/calificaciones', [CalificacionController::class, 'index'])->name('alumno.calificaciones');
+Route::get('/mi-panel/tareas',         [TareaController::class, 'misTablas'])->name('alumno.tareas');
+Route::post('/mi-panel/tareas/{tarea}/subir', [TareaController::class, 'subirEntrega'])->name('alumno.tareas.subir');
 
 // ── Maestro: CRUD completo ─────────────────────────────
 Route::resource('usuarios', UsuarioController::class)->parameters(['usuarios' => 'usuario']);
@@ -45,3 +48,9 @@ Route::get('calificaciones/alumnos/{grupoId}', [CalificacionController::class, '
 
 Route::resource('calificaciones', CalificacionController::class)
     ->parameters(['calificaciones' => 'calificacion']);
+
+// Tareas (maestro)
+Route::get('tareas/entregas/{entrega}/descargar', [TareaController::class, 'descargarEntrega'])
+    ->name('tareas.entregas.descargar');
+Route::resource('tareas', TareaController::class)
+    ->parameters(['tareas' => 'tarea']);

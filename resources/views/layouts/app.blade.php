@@ -19,6 +19,14 @@
 
         * { box-sizing: border-box; }
 
+        .label {
+            display: block;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
         body {
             background: var(--bg);
             color: var(--text);
@@ -29,7 +37,7 @@
 
         /* ── Sidebar ── */
         .sidebar {
-            width: 240px;
+            width: 200px;
             min-height: 100vh;
             background: var(--surface);
             border-right: 1px solid var(--border);
@@ -99,7 +107,7 @@
 
         /* ── Main ── */
         .main-wrap {
-            margin-left: 240px;
+            margin-left: 200px;
             flex: 1;
             padding: 32px;
             min-height: 100vh;
@@ -382,6 +390,10 @@
            class="sidebar-link {{ request()->is('calificaciones*') ? 'active' : '' }}">
             <i class="bi bi-star-fill"></i> Calificaciones
         </a>
+        <a href="{{ route('tareas.index') }}"
+           class="sidebar-link {{ request()->is('tareas*') ? 'active' : '' }}">
+            <i class="bi bi-journal-check"></i> Tareas
+        </a>
 
     {{-- Alumno: solo sus secciones --}}
     @elseif(Auth::check() && Auth::user()->rol === 'alumno')
@@ -405,6 +417,10 @@
         <a href="{{ route('alumno.calificaciones') }}"
            class="sidebar-link {{ request()->routeIs('alumno.calificaciones') ? 'active' : '' }}">
             <i class="bi bi-star-fill"></i> Mis Calificaciones
+        </a>
+        <a href="{{ route('alumno.tareas') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.tareas') ? 'active' : '' }}">
+            <i class="bi bi-journal-check"></i> Mis Tareas
         </a>
     @endif
 
