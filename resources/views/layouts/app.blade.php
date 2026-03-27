@@ -7,6 +7,62 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
+
+        @media (max-width: 768px) {
+
+            .topbar-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .topbar {
+                flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            }
+
+            .btn-accent {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-responsive {
+                background: var(--bg); 
+                padding: 8px;
+            }
+
+            .table-dark-custom thead {
+                display: none;
+            }
+
+            .table-dark-custom tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 10px;
+                background: var(--surface);
+            }
+
+            .table-dark-custom tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 8px 5px;
+                text-align: right;
+            }
+
+            .table-dark-custom tbody td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                color: var(--muted);
+                text-transform: uppercase;
+                font-size: 0.65rem;
+                text-align: left;
+            }
+        }
         :root {
             --bg:       #f1f5f9;
             --surface:  #ffffff;

@@ -11,7 +11,7 @@
 </div>
 
 <div class="card-dark">
-    <div class="table-container">
+    <div class="table-responsive">
         <table class="table-dark-custom">
             <thead>
                 <tr>
@@ -24,34 +24,29 @@
             </thead>
             <tbody>
                 @forelse($tareas as $tarea)
-                <tr>
-                    <td>
-                        <div style="font-weight:600">{{ $tarea->titulo }}</div>
-                        <div style="font-size:.75rem; color:var(--muted)" class="d-md-none">
-                            {{ $tarea->grupo->nombre }} · {{ $tarea->grupo->horario->materia->nombre ?? '—' }}
-                        </div>
-                        <div style="font-size:.75rem; color:var(--muted)" class="d-none d-md-block">
-                            {{ $tarea->grupo->horario->materia->nombre ?? '—' }}
-                        </div>
-                    </td>
-                    <td class="d-none d-md-table-cell">{{ $tarea->grupo->nombre }}</td>
-                    <td class="text-center">
-                            <span style="color:{{ $tarea->vencida ? '#dc2626' : 'inherit' }}; font-size:.85rem">
-                            {{ $tarea->fecha_entrega->format('d/m') }}
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge-pill">
-                        {{ $tarea->entregas->count() }}
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <div class="flex-center flex-gap-4">
-                        <a href="{{ route('tareas.show', $tarea) }}" class="btn-icon btn-icon-blue"><i class="bi bi-eye"></i></a>
-                            <a href="{{ route('tareas.edit', $tarea) }}" class="btn-icon btn-icon-amber"><i class="bi bi-pencil"></i></a>
-                        </div>
-                    </td>
-                </tr>
+                    <tr>
+                        <td data-label="Tarea">
+                            <div style="font-weight:600">{{ $tarea->titulo }}</div>
+                            <div style="font-size:.75rem; color:var(--muted)">
+                                {{ $tarea->grupo->horario->materia->nombre ?? '—' }}
+                            </div>
+                        </td>
+                        <td data-label="Grupo" class="d-none d-md-table-cell">{{ $tarea->grupo->nombre }}</td>
+                        <td data-label="Límite" class="text-center">
+                            <span style="color:{{ $tarea->vencida ? '#dc2626' : 'inherit' }}">
+                                {{ $tarea->fecha_entrega->format('d/m') }}
+                            </span>
+                        </td>
+                        <td data-label="Entregas" class="text-center">
+                            <span class="badge-pill">{{ $tarea->entregas->count() }}</span>
+                        </td>
+                        <td data-label="Acciones" class="text-center">
+                            <div class="flex-center flex-gap-4">
+                                <a href="{{ route('tareas.show', $tarea) }}" class="btn-icon btn-icon-blue"><i class="bi bi-eye"></i></a>
+                                <a href="{{ route('tareas.edit', $tarea) }}" class="btn-icon btn-icon-amber"><i class="bi bi-pencil"></i></a>
+                            </div>
+                        </td>
+                    </tr>
                 @empty
                 <tr><td colspan="5" style="text-align:center;padding:40px">No hay tareas.</td></tr>
                 @endforelse
