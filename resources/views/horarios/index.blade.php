@@ -4,9 +4,11 @@
 @section('contenido')
 <div class="topbar">
     <h1 class="page-title"><i class="bi bi-clock-fill" style="color:var(--accent)"></i> Horarios</h1>
+    @if(Auth::user()->rol === 'maestro')
     <a href="{{ route('horarios.create') }}" class="btn-accent">
         <i class="bi bi-plus-lg"></i> Nuevo Horario
     </a>
+    @endif
 </div>
 
 <div class="card-dark">
@@ -20,7 +22,9 @@
                     <th>Días</th>
                     <th style="text-align:center">Hora Inicio</th>
                     <th style="text-align:center">Hora Fin</th>
+                    @if(Auth::user()->rol === 'maestro')
                     <th style="text-align:center">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +41,7 @@
                     </td>
                     <td style="text-align:center"><code>{{ $horario->hora_inicio }}</code></td>
                     <td style="text-align:center"><code>{{ $horario->hora_fin }}</code></td>
+                    @if(Auth::user()->rol === 'maestro')
                     <td style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
                             <a href="{{ route('horarios.show', $horario) }}" class="btn-icon btn-icon-blue" title="Ver">
@@ -54,6 +59,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>

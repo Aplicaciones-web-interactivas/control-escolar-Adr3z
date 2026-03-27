@@ -38,6 +38,7 @@
             position: fixed;
             top: 0; left: 0;
             z-index: 100;
+            overflow-y: auto;
         }
 
         .sidebar-brand {
@@ -353,32 +354,84 @@
         <small>Sistema de Gestión</small>
     </div>
 
-    <div class="nav-section">Módulos</div>
+    {{-- Maestro: menú completo --}}
+    @if(Auth::check() && Auth::user()->rol === 'maestro')
+        <div class="nav-section">Administración</div>
+        <a href="{{ route('usuarios.index') }}"
+           class="sidebar-link {{ request()->is('usuarios*') ? 'active' : '' }}">
+            <i class="bi bi-people-fill"></i> Usuarios
+        </a>
+        <a href="{{ route('inscripciones.index') }}"
+           class="sidebar-link {{ request()->is('inscripciones*') ? 'active' : '' }}">
+            <i class="bi bi-person-check-fill"></i> Inscripciones
+        </a>
+        <div class="nav-section">Catálogos</div>
+        <a href="{{ route('materias.index') }}"
+           class="sidebar-link {{ request()->is('materias*') ? 'active' : '' }}">
+            <i class="bi bi-book-fill"></i> Materias
+        </a>
+        <a href="{{ route('horarios.index') }}"
+           class="sidebar-link {{ request()->is('horarios*') ? 'active' : '' }}">
+            <i class="bi bi-clock-fill"></i> Horarios
+        </a>
+        <a href="{{ route('grupos.index') }}"
+           class="sidebar-link {{ request()->is('grupos*') ? 'active' : '' }}">
+            <i class="bi bi-collection-fill"></i> Grupos
+        </a>
+        <a href="{{ route('calificaciones.index') }}"
+           class="sidebar-link {{ request()->is('calificaciones*') ? 'active' : '' }}">
+            <i class="bi bi-star-fill"></i> Calificaciones
+        </a>
 
-    <a href="{{ route('usuarios.index') }}"
-       class="sidebar-link {{ request()->is('usuarios*') ? 'active' : '' }}">
-        <i class="bi bi-people-fill"></i> Usuarios
-    </a>
-    <a href="{{ route('materias.index') }}"
-       class="sidebar-link {{ request()->is('materias*') ? 'active' : '' }}">
-        <i class="bi bi-book-fill"></i> Materias
-    </a>
-    <a href="{{ route('horarios.index') }}"
-       class="sidebar-link {{ request()->is('horarios*') ? 'active' : '' }}">
-        <i class="bi bi-clock-fill"></i> Horarios
-    </a>
-    <a href="{{ route('grupos.index') }}"
-       class="sidebar-link {{ request()->is('grupos*') ? 'active' : '' }}">
-        <i class="bi bi-collection-fill"></i> Grupos
-    </a>
-    <a href="{{ route('inscripciones.index') }}"
-       class="sidebar-link {{ request()->is('inscripciones*') ? 'active' : '' }}">
-        <i class="bi bi-person-check-fill"></i> Inscripciones
-    </a>
-    <a href="{{ route('calificaciones.index') }}"
-       class="sidebar-link {{ request()->is('calificaciones*') ? 'active' : '' }}">
-        <i class="bi bi-star-fill"></i> Calificaciones
-    </a>
+    {{-- Alumno: solo sus secciones --}}
+    @elseif(Auth::check() && Auth::user()->rol === 'alumno')
+        <div class="nav-section">Mi Escuela</div>
+        <a href="{{ route('alumno.dashboard') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-house-fill"></i> Inicio
+        </a>
+        <a href="{{ route('alumno.materias') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.materias') ? 'active' : '' }}">
+            <i class="bi bi-book-fill"></i> Materias
+        </a>
+        <a href="{{ route('alumno.horarios') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.horarios') ? 'active' : '' }}">
+            <i class="bi bi-clock-fill"></i> Horarios
+        </a>
+        <a href="{{ route('alumno.grupos') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.grupos') ? 'active' : '' }}">
+            <i class="bi bi-collection-fill"></i> Grupos
+        </a>
+        <a href="{{ route('alumno.calificaciones') }}"
+           class="sidebar-link {{ request()->routeIs('alumno.calificaciones') ? 'active' : '' }}">
+            <i class="bi bi-star-fill"></i> Mis Calificaciones
+        </a>
+    @endif
+
+    {{-- Usuario + logout al fondo --}}
+    <div style="margin-top:auto;padding:16px 12px;border-top:1px solid var(--border)">
+        @auth
+        <div style="display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:6px">
+            <div style="width:34px;height:34px;background:#ede9fe;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#6c63ff;font-weight:700;flex-shrink:0">
+                {{ strtoupper(substr(Auth::user()->nombre, 0, 1)) }}
+            </div>
+            <div style="overflow:hidden">
+                <div style="font-size:.8rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                    {{ Auth::user()->nombre }}
+                </div>
+                <div style="font-size:.7rem;color:var(--muted)">{{ ucfirst(Auth::user()->rol) }}</div>
+            </div>
+        </div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" style="width:100%;background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:.8rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s"
+                    onmouseover="this.style.borderColor='#f87171';this.style.color='#dc2626'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+            </button>
+        </form>
+        @endauth
+    </div>
 </aside>
 
 {{-- Main --}}

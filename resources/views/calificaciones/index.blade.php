@@ -4,9 +4,11 @@
 @section('contenido')
 <div class="topbar">
     <h1 class="page-title"><i class="bi bi-star-fill" style="color:var(--accent)"></i> Calificaciones</h1>
+    @if(Auth::user()->rol === 'maestro')
     <a href="{{ route('calificaciones.create') }}" class="btn-accent">
         <i class="bi bi-plus-lg"></i> Nueva Calificación
     </a>
+    @endif
 </div>
 
 <div class="card-dark">
@@ -15,20 +17,26 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    @if(Auth::user()->rol === 'maestro')
                     <th>Alumno</th>
                     <th>Clave</th>
+                    @endif
                     <th>Grupo</th>
                     <th>Materia</th>
                     <th style="text-align:center">Calificación</th>
+                    @if(Auth::user()->rol === 'maestro')
                     <th style="text-align:center">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
                 @forelse($calificaciones as $cal)
                 <tr>
                     <td style="color:var(--muted)">{{ $cal->id }}</td>
+                    @if(Auth::user()->rol === 'maestro')
                     <td style="font-weight:600">{{ $cal->usuario->nombre ?? '—' }}</td>
                     <td><code>{{ $cal->usuario->clave_institucional ?? '—' }}</code></td>
+                    @endif
                     <td>{{ $cal->grupo->nombre ?? '—' }}</td>
                     <td>{{ $cal->grupo->horario->materia->nombre ?? '—' }}</td>
                     <td style="text-align:center">
@@ -45,6 +53,7 @@
                             <span style="color:var(--muted)">—</span>
                         @endif
                     </td>
+                    @if(Auth::user()->rol === 'maestro')
                     <td style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
                             <a href="{{ route('calificaciones.show', $cal) }}" class="btn-icon btn-icon-blue" title="Ver">
@@ -62,6 +71,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>

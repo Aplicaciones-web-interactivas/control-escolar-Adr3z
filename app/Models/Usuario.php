@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
-    use HasFactory;
-
-    protected $table = 'usuarios';
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'nombre',
@@ -19,18 +18,38 @@ class Usuario extends Model
         'activo',
     ];
 
-    // 'contrasena' oculta en serialización — siempre cifrada con bcrypt vía Hash::make()
-    protected $hidden = [
-        'contrasena',
-    ];
+    protected $hidden = ['contrasena', 'remember_token'];
 
-    protected $casts = [
-        'activo' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'activo' => 'boolean',
+        ];
+    }
 
-    // Un usuario (maestro) puede tener muchos horarios asignados
+    // Laravel usa este método para verificar la contraseña
+    public function getAuthPassword()
+    {
+        return $this->contrasena;
+    }
+
     public function horarios()
     {
         return $this->hasMany(Horario::class, 'usuario_id');
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'usuario_id');
+    }
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class, 'inscripciones', 'usuario_id', 'grupo_id');
+    }
+
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class, 'usuario_id');
     }
 }

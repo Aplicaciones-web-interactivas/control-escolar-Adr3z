@@ -4,9 +4,11 @@
 @section('contenido')
 <div class="topbar">
     <h1 class="page-title"><i class="bi bi-book-fill" style="color:var(--accent2)"></i> Materias</h1>
+    @if(Auth::user()->rol === 'maestro')
     <a href="{{ route('materias.create') }}" class="btn-accent">
         <i class="bi bi-plus-lg"></i> Nueva Materia
     </a>
+    @endif
 </div>
 
 <div class="card-dark">
@@ -17,7 +19,9 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Clave</th>
+                    @if(Auth::user()->rol === 'maestro')
                     <th style="text-align:center">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +30,7 @@
                     <td style="color:var(--muted)">{{ $materia->id }}</td>
                     <td style="font-weight:600">{{ $materia->nombre }}</td>
                     <td><code>{{ $materia->clave }}</code></td>
+                    @if(Auth::user()->rol === 'maestro')
                     <td style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
                             <a href="{{ route('materias.show', $materia) }}" class="btn-icon btn-icon-blue" title="Ver">
@@ -43,6 +48,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>

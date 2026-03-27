@@ -7,12 +7,19 @@ use App\Models\Grupo;
 use App\Models\Inscripcion;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CalificacionController extends Controller
 {
     public function index()
     {
-        $calificaciones = Calificacion::with(['grupo.horario.materia', 'usuario'])->get();
+        $query = Calificacion::with(['grupo.horario.materia', 'usuario']);
+        if (Auth::user()->rol === 'alumno') {
+            $query->where('usuario_id', Auth::id());
+        }
+
+        $calificaciones = $query->get();
         return view('calificaciones.index', compact('calificaciones'));
     }
 
@@ -22,7 +29,6 @@ class CalificacionController extends Controller
         return view('calificaciones.create', compact('grupos'));
     }
 
-    // Devuelve los alumnos inscritos en un grupo (para el select dinámico vía AJAX)
     public function alumnosPorGrupo($grupoId)
     {
         $alumnos = Inscripcion::with('usuario')
