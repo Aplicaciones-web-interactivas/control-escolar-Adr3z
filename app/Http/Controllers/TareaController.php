@@ -34,7 +34,7 @@ class TareaController extends Controller
         $tareas = Tarea::with(['grupo.horario.materia', 'entregas'])
             ->whereIn('grupo_id', $gruposIds)
             ->orderBy('fecha_entrega')
-            ->paginate(15);
+            ->paginate(5);
 
         return view('tareas.index', compact('tareas'));
     }

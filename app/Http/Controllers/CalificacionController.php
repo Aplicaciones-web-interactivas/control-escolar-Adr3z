@@ -19,7 +19,7 @@ class CalificacionController extends Controller
             $query->where('usuario_id', Auth::id());
         }
 
-        $calificaciones = $query->paginate(2);
+        $calificaciones = $query->paginate(5);
         return view('calificaciones.index', compact('calificaciones'));
     }
 
