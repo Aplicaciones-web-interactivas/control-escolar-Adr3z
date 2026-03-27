@@ -28,7 +28,7 @@ class UsuarioController extends Controller
             'nombre'             => 'required|string|max:255',
             'clave_institucional'=> 'required|string|max:50|unique:usuarios',
             'contrasena'         => 'required|string|min:6',
-            'rol'                => 'required|in:alumno,maestro,admin',
+            'rol'                => 'required|in:alumno,maestro',
             'activo'             => 'boolean',
         ]);
 

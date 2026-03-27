@@ -21,7 +21,7 @@
     <div>
         <label class="form-label-dark">Rol</label>
         <select name="rol" class="form-select-dark {{ $errors->has('rol') ? 'is-invalid' : '' }}" required>
-            @foreach(['alumno', 'maestro', 'admin'] as $rol)
+            @foreach(['alumno', 'maestro'] as $rol)
                 <option value="{{ $rol }}" {{ old('rol', $usuario->rol ?? 'alumno') === $rol ? 'selected' : '' }}>
                     {{ ucfirst($rol) }}
                 </option>
