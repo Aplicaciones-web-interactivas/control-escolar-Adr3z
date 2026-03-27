@@ -29,40 +29,35 @@
             </thead>
             <tbody>
                 @forelse($grupos as $grupo)
-                <tr>
-                    <td style="color:var(--muted)">{{ $grupo->id }}</td>
-                    <td style="font-weight:600">{{ $grupo->nombre }}</td>
-                    <td>
-                        <span style="font-weight:600">{{ $grupo->horario->materia->nombre ?? '—' }}</span>
-                        <code style="font-size:.7rem;display:block">{{ $grupo->horario->materia->clave ?? '' }}</code>
-                    </td>
-                    <td style="color:var(--muted)">{{ $grupo->horario->usuario->nombre ?? '—' }}</td>
-                    <td style="color:var(--muted)">
-                        {{ is_array($grupo->horario->dias ?? '') ? implode(', ', $grupo->horario->dias) : ($grupo->horario->dias ?? '—') }}
-                    </td>
-                    <td style="text-align:center">
-                        <code>{{ $grupo->horario->hora_inicio ?? '—' }} – {{ $grupo->horario->hora_fin ?? '' }}</code>
-                    </td>
-                    @if(Auth::user()->rol === 'maestro')
-                    <td style="text-align:center">
-                        <div style="display:flex;justify-content:center;gap:6px">
-                            <a href="{{ route('grupos.show', $grupo) }}" class="btn-icon btn-icon-blue" title="Ver">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="{{ route('grupos.edit', $grupo) }}" class="btn-icon btn-icon-amber" title="Editar">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form action="{{ route('grupos.destroy', $grupo) }}" method="POST" style="display:inline"
-                                  onclick="confirmarEliminar(this.action, '¿Eliminar este grupo? Esta acción no se puede deshacer.'); return false;">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                    @endif
-                </tr>
+                    <tr>
+                        <td data-label="#" style="color:var(--muted)">{{ $grupo->id }}</td>
+                        <td data-label="Nombre" style="font-weight:600">{{ $grupo->nombre }}</td>
+                        <td data-label="Materia">
+                            <span style="font-weight:600">{{ $grupo->horario->materia->nombre ?? '—' }}</span>
+                            <code style="font-size:.7rem;display:block">{{ $grupo->horario->materia->clave ?? '' }}</code>
+                        </td>
+                        <td data-label="Maestro" style="color:var(--muted)">{{ $grupo->horario->usuario->nombre ?? '—' }}</td>
+                        <td data-label="Días" style="color:var(--muted)">
+                            {{ is_array($grupo->horario->dias ?? '') ? implode(', ', $grupo->horario->dias) : ($grupo->horario->dias ?? '—') }}
+                        </td>
+                        <td data-label="Horario" style="text-align:center">
+                            <code>{{ $grupo->horario->hora_inicio ?? '—' }} – {{ $grupo->horario->hora_fin ?? '' }}</code>
+                        </td>
+                        
+                        @if(Auth::user()->rol === 'maestro')
+                        <td data-label="Acciones" style="text-align:center">
+                            <div style="display:flex;justify-content:center;gap:6px">
+                                <a href="{{ route('grupos.show', $grupo) }}" class="btn-icon btn-icon-blue"><i class="bi bi-eye"></i></a>
+                                <a href="{{ route('grupos.edit', $grupo) }}" class="btn-icon btn-icon-amber"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ route('grupos.destroy', $grupo) }}" method="POST" style="display:inline"
+                                    onclick="confirmarEliminar(this.action, '¿Eliminar este grupo?'); return false;">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn-icon btn-icon-red"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                        @endif
+                    </tr>
                 @empty
                 <tr>
                     <td colspan="7" style="text-align:center;color:var(--muted);padding:40px">

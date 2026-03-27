@@ -25,33 +25,27 @@
             <tbody>
                 @forelse($usuarios as $usuario)
                 <tr>
-                    <td style="color:var(--muted)">{{ $usuario->id }}</td>
-                    <td style="font-weight:600">{{ $usuario->nombre }}</td>
-                    <td><code>{{ $usuario->clave_institucional }}</code></td>
-                    <td>
+                    <td data-label="#" style="color:var(--muted)">{{ $usuario->id }}</td>
+                    <td data-label="Nombre" style="font-weight:600">{{ $usuario->nombre }}</td>
+                    <td data-label="Clave"><code>{{ $usuario->clave_institucional }}</code></td>
+                    <td data-label="Rol">
                         <span class="badge-role badge-{{ $usuario->rol }}">{{ ucfirst($usuario->rol) }}</span>
                     </td>
-                    <td>
+                    <td data-label="Estado">
                         @if($usuario->activo)
                             <span class="badge-role badge-activo"><i class="bi bi-circle-fill me-1" style="font-size:.45rem"></i>Activo</span>
                         @else
                             <span class="badge-role badge-inactivo"><i class="bi bi-circle-fill me-1" style="font-size:.45rem"></i>Inactivo</span>
                         @endif
                     </td>
-                    <td style="text-align:center">
+                    <td data-label="Acciones" style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
-                            <a href="{{ route('usuarios.show', $usuario) }}" class="btn-icon btn-icon-blue" title="Ver">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="{{ route('usuarios.edit', $usuario) }}" class="btn-icon btn-icon-amber" title="Editar">
-                                <i class="bi bi-pencil"></i>
-                            </a>
+                            <a href="{{ route('usuarios.show', $usuario) }}" class="btn-icon btn-icon-blue"><i class="bi bi-eye"></i></a>
+                            <a href="{{ route('usuarios.edit', $usuario) }}" class="btn-icon btn-icon-amber"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" style="display:inline"
-                                  onclick="confirmarEliminar(this.action, '¿Eliminar al usuario? Esta acción no se puede deshacer.'); return false;">
+                                onclick="confirmarEliminar(this.action, '¿Eliminar al usuario?'); return false;">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <button type="submit" class="btn-icon btn-icon-red"><i class="bi bi-trash"></i></button>
                             </form>
                         </div>
                     </td>

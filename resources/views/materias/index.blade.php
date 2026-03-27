@@ -27,11 +27,12 @@
             <tbody>
                 @forelse($materias as $materia)
                 <tr>
-                    <td style="color:var(--muted)">{{ $materia->id }}</td>
-                    <td style="font-weight:600">{{ $materia->nombre }}</td>
-                    <td><code>{{ $materia->clave }}</code></td>
+                    <td data-label="#" style="color:var(--muted)">{{ $materia->id }}</td>
+                    <td data-label="Nombre" style="font-weight:600">{{ $materia->nombre }}</td>
+                    <td data-label="Clave"><code>{{ $materia->clave }}</code></td>
+                    
                     @if(Auth::user()->rol === 'maestro')
-                    <td style="text-align:center">
+                    <td data-label="Acciones" style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
                             <a href="{{ route('materias.show', $materia) }}" class="btn-icon btn-icon-blue" title="Ver">
                                 <i class="bi bi-eye"></i>
@@ -40,7 +41,7 @@
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form action="{{ route('materias.destroy', $materia) }}" method="POST" style="display:inline"
-                                  onclick="confirmarEliminar(this.action, '¿Eliminar esta materia? Esta acción no se puede deshacer.'); return false;">
+                                  onclick="confirmarEliminar(this.action, '¿Eliminar esta materia?'); return false;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>

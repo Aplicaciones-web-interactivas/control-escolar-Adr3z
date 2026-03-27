@@ -32,14 +32,17 @@
             <tbody>
                 @forelse($calificaciones as $cal)
                 <tr>
-                    <td style="color:var(--muted)">{{ $cal->id }}</td>
+                    <td data-label="#" style="color:var(--muted)">{{ $cal->id }}</td>
+                    
                     @if(Auth::user()->rol === 'maestro')
-                    <td style="font-weight:600">{{ $cal->usuario->nombre ?? '—' }}</td>
-                    <td><code>{{ $cal->usuario->clave_institucional ?? '—' }}</code></td>
+                    <td data-label="Alumno" style="font-weight:600">{{ $cal->usuario->nombre ?? '—' }}</td>
+                    <td data-label="Clave"><code>{{ $cal->usuario->clave_institucional ?? '—' }}</code></td>
                     @endif
-                    <td>{{ $cal->grupo->nombre ?? '—' }}</td>
-                    <td>{{ $cal->grupo->horario->materia->nombre ?? '—' }}</td>
-                    <td style="text-align:center">
+                    
+                    <td data-label="Grupo">{{ $cal->grupo->nombre ?? '—' }}</td>
+                    <td data-label="Materia">{{ $cal->grupo->horario->materia->nombre ?? '—' }}</td>
+                    
+                    <td data-label="Calificación" style="text-align:center">
                         @if(!is_null($cal->calificacion))
                             @php $c = $cal->calificacion; @endphp
                             <span style="
@@ -53,8 +56,9 @@
                             <span style="color:var(--muted)">—</span>
                         @endif
                     </td>
+
                     @if(Auth::user()->rol === 'maestro')
-                    <td style="text-align:center">
+                    <td data-label="Acciones" style="text-align:center">
                         <div style="display:flex;justify-content:center;gap:6px">
                             <a href="{{ route('calificaciones.show', $cal) }}" class="btn-icon btn-icon-blue" title="Ver">
                                 <i class="bi bi-eye"></i>
@@ -63,7 +67,7 @@
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <form action="{{ route('calificaciones.destroy', $cal) }}" method="POST" style="display:inline"
-                                  onclick="confirmarEliminar(this.action, '¿Eliminar esta calificación? Esta acción no se puede deshacer.'); return false;">
+                                  onclick="confirmarEliminar(this.action, '¿Eliminar esta calificación?'); return false;">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
                                     <i class="bi bi-trash"></i>

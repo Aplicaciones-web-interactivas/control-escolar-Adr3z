@@ -29,38 +29,33 @@
             </thead>
             <tbody>
                 @forelse($horarios as $horario)
-                <tr>
-                    <td style="color:var(--muted)">{{ $horario->id }}</td>
-                    <td>
-                        <span style="font-weight:600;display:block">{{ $horario->materia->nombre ?? '—' }}</span>
-                        <code style="font-size:.7rem">{{ $horario->materia->clave ?? '' }}</code>
-                    </td>
-                    <td>{{ $horario->usuario->nombre ?? '—' }}</td>
-                    <td style="color:var(--muted)">
-                        {{ is_array($horario->dias) ? implode(', ', $horario->dias) : $horario->dias }}
-                    </td>
-                    <td style="text-align:center"><code>{{ $horario->hora_inicio }}</code></td>
-                    <td style="text-align:center"><code>{{ $horario->hora_fin }}</code></td>
-                    @if(Auth::user()->rol === 'maestro')
-                    <td style="text-align:center">
-                        <div style="display:flex;justify-content:center;gap:6px">
-                            <a href="{{ route('horarios.show', $horario) }}" class="btn-icon btn-icon-blue" title="Ver">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a href="{{ route('horarios.edit', $horario) }}" class="btn-icon btn-icon-amber" title="Editar">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <form action="{{ route('horarios.destroy', $horario) }}" method="POST" style="display:inline"
-                                  onclick="confirmarEliminar(this.action, '¿Eliminar este horario? Esta acción no se puede deshacer.'); return false;">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="btn-icon btn-icon-red" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                    @endif
-                </tr>
+                    <tr>
+                        <td data-label="#" style="color:var(--muted)">{{ $horario->id }}</td>
+                        <td data-label="Materia">
+                            <span style="font-weight:600;display:block">{{ $horario->materia->nombre ?? '—' }}</span>
+                            <code style="font-size:.7rem">{{ $horario->materia->clave ?? '' }}</code>
+                        </td>
+                        <td data-label="Maestro">{{ $horario->usuario->nombre ?? '—' }}</td>
+                        <td data-label="Días" style="color:var(--muted)">
+                            {{ is_array($horario->dias) ? implode(', ', $horario->dias) : $horario->dias }}
+                        </td>
+                        <td data-label="Inicio" style="text-align:center"><code>{{ $horario->hora_inicio }}</code></td>
+                        <td data-label="Fin" style="text-align:center"><code>{{ $horario->hora_fin }}</code></td>
+                        
+                        @if(Auth::user()->rol === 'maestro')
+                        <td data-label="Acciones" style="text-align:center">
+                            <div style="display:flex;justify-content:center;gap:6px">
+                                <a href="{{ route('horarios.show', $horario) }}" class="btn-icon btn-icon-blue"><i class="bi bi-eye"></i></a>
+                                <a href="{{ route('horarios.edit', $horario) }}" class="btn-icon btn-icon-amber"><i class="bi bi-pencil"></i></a>
+                                <form action="{{ route('horarios.destroy', $horario) }}" method="POST" style="display:inline"
+                                    onclick="confirmarEliminar(this.action, '¿Eliminar este horario?'); return false;">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn-icon btn-icon-red"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
+                        @endif
+                    </tr>
                 @empty
                 <tr>
                     <td colspan="7" style="text-align:center;color:var(--muted);padding:40px">
